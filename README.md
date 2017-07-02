@@ -102,6 +102,7 @@ LOOP
     PRINT to Serial Monitor “UpperCase(input) = binary(res)”
 
 
+
 Testing and development:
 Bug: When one input is 8-digit binary number and second one is not the result gets truncated.
 This is caused by the rounding to nearest higher 2’s power, because 8-bit register overflows.

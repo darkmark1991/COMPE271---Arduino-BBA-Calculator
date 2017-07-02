@@ -25,6 +25,7 @@ Hardware: The necessary hardware to run this code is Arduino UNO.
 Software: Arduino IDE.
 
 Pseudocode:
+
 ENUM BinaryOperator{NOT, AND, OR, XOR, NAND, NOR, XNOR, IMP}
 
 MapOperator(opStr, opCode)

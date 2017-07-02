@@ -1,6 +1,6 @@
 # COMPE271 - Arduino Binary Boolean Algebra Calculator
 
-Description:
+# Description:
 The project implements a calculator that will do boolean algebraic calculations on binary
 numbers. The user will enter the two operands as binary numbers (max. 8 digits) and an operator
 (NOT, AND, OR, XOR, NAND, NOR, XNOR, ->, EQV) and output the result.
@@ -24,7 +24,7 @@ After printing the result, or error, the program waits for the next instruction.
 Hardware: The necessary hardware to run this code is Arduino UNO.
 Software: Arduino IDE.
 
-Pseudocode:
+# Pseudocode:
 ENUM BinaryOperator{NOT, AND, OR, XOR, NAND, NOR, XNOR, IMP}
 
 MapOperator(opStr, opCode)
@@ -58,55 +58,165 @@ ParseCommand (op, argArr, input)
 AssemblyBinCalc(op, a1, a2)
   Res = ERROR;
   asm(
-    TEST op
-    IF 0 branch to NOT
-    CMP op, 1
-    IF == branch to AND
-    CMP op, 2
-    IF == branch to OR
-    ………ETC………
-    JUMP to EXIT
-    NOT: Complement a1
-    JUMP to END
-    AND: a1 = a1 AND a2
-    JUMP to END
-    OR: a1 = a1 OR a2
-    JUMP to END
-    ………ETC………
-    END: MOV res, a1
-    EXIT
-  )
-  RETURN res
+Pseudocode:
+
+ENUM BinaryOperator{NOT, AND, OR, XOR, NAND, NOR, XNOR, IMP}
+
+
+
+MapOperator(opStr, opCode)
+
+	SWITCH opStr:
+
+		case ‘and’ : opCode = AND
+
+		case ‘or’ : opCode = OR
+
+		case ‘xor’ : opCode = XOR
+
+		etc…
+
+		default : RETURN ERROR
+
+	RETURN OK
+
+	
+
+BinaryStr2Int(str, num)
+
+	IF str contains something other than 1s and 0s RETURN ERROR
+
+	num = strtol(str)
+
+	RETURN OK
+
+	
+
+ParseCommand (op, argArr, input)
+
+	SPLIT input > tmp[0], tmp[1], tmp[2]
+
+	IF argCount == 2
+
+		MapOperator(tmp[0], op)
+
+		BinaryStr2Int(tmp[1], argArr[0])
+
+		argArr[1] = argArr[0] //copy the same arg into argArr[1] as well
+
+	IF argCount == 3
+
+		MapOperator(tmp[1], op)
+
+		BinaryStr2Int(tmp[0], argArr[1])
+
+		BinaryStr2Int(tmp[2], argArr[2])
+
+	ELSE
+
+		RETURN ERROR
+
+	RETURN OK
+
+
+
+AssemblyBinCalc(op, a1, a2)
+
+	Res = ERROR;
+
+	asm(
+
+		TEST op
+
+		IF 0 branch to NOT
+
+		CMP op, 1
+
+		IF == branch to AND
+
+		CMP op, 2
+
+		IF == branch to OR
+
+		………ETC………
+
+		JUMP to EXIT
+
+		NOT: Complement a1
+
+		JUMP to END
+
+		AND: a1 = a1 AND a2
+
+		JUMP to END
+
+		OR: a1 = a1 OR a2
+
+		JUMP to END
+
+		………ETC………
+
+		END: MOV res, a1
+
+		EXIT
+
+	)
+
+	RETURN res
+
 AssemblyBinMask(res, a1, a2)
-  asm(
-    MAX = a1
-    CMP a1, a2
-    IF a1>=a2 branch to A1
-    MAX = a2
-    A1:
-    MAX |= MAX >> 1;
-    MAX |= MAX >> 2;
-    MAX |= MAX >> 4;
-    AND res, MAX
-  )
+
+	asm(
+
+		MAX = a1
+
+		CMP a1, a2
+
+		IF a1>=a2 branch to A1
+
+		MAX = a2
+
+		A1:
+
+		MAX |= MAX >> 1;
+
+		MAX |= MAX >> 2;
+
+		MAX |= MAX >> 4;
+
+		AND res, MAX
+
+	)
+
+
 
 SETUP
-  INITIALIZE Arduino Serial Monitor
-  PROMPT user to input command // ex. 1111 XOR 1011
-  
+
+	INITIALIZE Arduino Serial Monitor
+
+	PROMPT user to input command // ex. 1111 XOR 1011
+
+	
+
 LOOP
-  IF input
-    ParseCommand (op, argArr, input)
-    res = AssemblyBinCalc(op, argArr)
-    res = AssemblyBinMask(res, argArr)
-    PRINT to Serial Monitor “UpperCase(input) = binary(res)”
+
+	IF input
+
+		ParseCommand (op, argArr, input)
+
+		res = AssemblyBinCalc(op, argArr)
+
+		res = AssemblyBinMask(res, argArr)
+
+		PRINT to Serial Monitor “UpperCase(input) = binary(res)”
 
 
-
-Testing and development:
-Bug: When one input is 8-digit binary number and second one is not the result gets truncated.
+#Testing and development:
+#Bug: 
+When one input is 8-digit binary number and second one is not the result gets truncated.
 This is caused by the rounding to nearest higher 2’s power, because 8-bit register overflows.
-Fix: I fixed the bug by skipping the masking if either argument has the highest bit set.
+#Fix: 
+I fixed the bug by skipping the masking if either argument has the highest bit set.
 Future: I’m planning to implement some sort of 0 padding in the future, so that 1111 AND 0001
 will display in 0001 and not 1.
 

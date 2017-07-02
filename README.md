@@ -25,43 +25,8 @@ Hardware: The necessary hardware to run this code is Arduino UNO.
 Software: Arduino IDE.
 
 # Pseudocode:
-ENUM BinaryOperator{NOT, AND, OR, XOR, NAND, NOR, XNOR, IMP}
-
-MapOperator(opStr, opCode)
-  SWITCH opStr:
-    case ‘and’ : opCode = AND
-    case ‘or’ : opCode = OR
-    case ‘xor’ : opCode = XOR
-    etc…
-    default : RETURN ERROR
-  RETURN OK
-  
-BinaryStr2Int(str, num)
-  IF str contains something other than 1s and 0s RETURN ERROR
-  num = strtol(str)
-  RETURN OK
-  
-ParseCommand (op, argArr, input)
-  SPLIT input > tmp[0], tmp[1], tmp[2]
-  IF argCount == 2
-    MapOperator(tmp[0], op)
-    BinaryStr2Int(tmp[1], argArr[0])
-    argArr[1] = argArr[0] //copy the same arg into argArr[1] as well
-  IF argCount == 3
-    MapOperator(tmp[1], op)
-    BinaryStr2Int(tmp[0], argArr[1])
-    BinaryStr2Int(tmp[2], argArr[2])
-  ELSE
-    RETURN ERROR
-  RETURN OK
-
-AssemblyBinCalc(op, a1, a2)
-  Res = ERROR;
-  asm(
-Pseudocode:
 
 ENUM BinaryOperator{NOT, AND, OR, XOR, NAND, NOR, XNOR, IMP}
-
 
 
 MapOperator(opStr, opCode)
@@ -163,6 +128,8 @@ AssemblyBinCalc(op, a1, a2)
 	)
 
 	RETURN res
+
+
 
 AssemblyBinMask(res, a1, a2)
 
